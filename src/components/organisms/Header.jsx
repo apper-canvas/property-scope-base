@@ -20,6 +20,16 @@ const Header = ({ comparisonCount = 0 }) => {
     return location.pathname === path;
   };
 
+  const handleLogout = async () => {
+    try {
+      const { ApperUI } = window.ApperSDK;
+      await ApperUI.logout();
+      navigate('/login');
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <header className="bg-white shadow-md sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -38,7 +48,7 @@ const Header = ({ comparisonCount = 0 }) => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex items-center space-x-8">
             {navigationItems.map((item) => (
               <button
                 key={item.path}
@@ -59,10 +69,26 @@ const Header = ({ comparisonCount = 0 }) => {
                 )}
               </button>
             ))}
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleLogout}
+              className="ml-4"
+            >
+              <ApperIcon name="LogOut" size={16} className="mr-2" />
+              Logout
+            </Button>
           </nav>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+{/* Mobile menu button */}
+          <div className="md:hidden flex items-center space-x-2">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleLogout}
+            >
+              <ApperIcon name="LogOut" size={16} />
+            </Button>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 rounded-md text-secondary-600 hover:text-primary-600 hover:bg-primary-50"
